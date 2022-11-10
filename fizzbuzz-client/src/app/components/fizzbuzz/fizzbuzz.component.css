@@ -1,0 +1,20 @@
+.fizzbuzz-container {
+  border: solid 1px lightgrey;
+  padding: 20px 10px 10px 10px;
+  border-radius: 6px;
+}
+
+.fizzbuzz-form {
+  width: 100%;
+  display: flex;
+}
+
+.fizzbuzz-form-group {
+  width: 90%;
+}
+
+.play-button {
+  height: 40px;
+  line-height: 10px;
+  width: 60px;
+}

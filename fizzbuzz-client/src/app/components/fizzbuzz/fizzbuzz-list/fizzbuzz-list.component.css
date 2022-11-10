@@ -1,0 +1,11 @@
+.fizzbuzz-card-container{
+  padding: 15px;
+}
+
+.fizzbuzz-card {
+  display: block;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 8px;
+  margin-top: 10px;
+}

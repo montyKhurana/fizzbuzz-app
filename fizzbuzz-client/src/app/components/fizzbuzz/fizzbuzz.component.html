@@ -1,0 +1,39 @@
+<div class="col-md-8" id="fizzbuzz-container">
+  <div class="input-group">
+    <form [formGroup]="fizzBuzzForm" class="fizzbuzz-form" id="fizzbuzzForm">
+      <div class="form-group fizzbuzz-form-group">
+        <div class="col-sm-auto">
+          <input type="text"
+                 formControlName="inputControl"
+                 placeholder="Please enter a number"
+                 required
+                 minlength="1"
+                 maxlength="200000"
+                 class="form-control"
+                 [class.is-invalid]="inputControl.invalid && (inputControl.dirty || inputControl.touched)">
+          <div *ngIf="inputControl.invalid && (inputControl.dirty || inputControl.touched)" class="invalid-feedback">
+            <div *ngIf="inputControl.errors?.['required']">
+              This field is required.
+            </div>
+            <div *ngIf="inputControl.errors?.['min']">
+              Input number should not be negative.
+            </div>
+            <div *ngIf="inputControl.errors?.['max']">
+              Input number should be less than 20000.
+            </div>
+            <div *ngIf="inputControl.errors?.['pattern']">
+              Input should be a valid number from 1 to 20000.
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary play-button"
+              [disabled]="!fizzBuzzForm.valid"
+              (click)="playFizzBuzz()"
+      >
+        Play
+      </button>
+    </form>
+  </div>
+  <app-fizzbuzz-list *ngIf="!!fizzBuzzList" [fizzBuzzList]="fizzBuzzList"></app-fizzbuzz-list>
+</div>

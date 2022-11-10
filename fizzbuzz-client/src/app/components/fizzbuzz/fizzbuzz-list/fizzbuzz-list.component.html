@@ -1,0 +1,10 @@
+<app-loading-fizzbuzz></app-loading-fizzbuzz>
+<div class="fizzbuzz-card-container">
+  <div fxLayout="row wrap" fxLayoutGap="32px" fxLayoutAlign="flex-start">
+    <ng-container *ngFor="let element of fizzBuzzList">
+      <div fxFlex="0 1 100px" class="fizzbuzz-card">{{element}} </div>
+    </ng-container>
+  </div>
+</div>
+
+

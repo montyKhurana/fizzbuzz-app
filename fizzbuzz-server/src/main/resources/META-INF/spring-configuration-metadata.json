@@ -1,0 +1,28 @@
+{
+  "properties": [
+    {
+      "name": "max.input.number",
+      "type": "java.lang.String",
+      "description": "Description for max.input.number."
+    },
+    {
+      "name": "invalid.input.message",
+      "type": "java.lang.String",
+      "description": "Description for invalid.input.message."
+    },
+    {
+      "name": "text.fizz",
+      "type": "java.lang.String",
+      "description": "Description for text.fizz."
+    },
+    {
+      "name": "text.buzz",
+      "type": "java.lang.String",
+      "description": "Description for text.buzz."
+    },
+    {
+      "name": "text.fizz.buzz",
+      "type": "java.lang.String",
+      "description": "Description for text.fizz.buzz."
+    }
+  ] }
