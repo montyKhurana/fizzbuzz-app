@@ -9,7 +9,7 @@
 * Angular
 * OpenApi
 
-###Projects Structure and features
+### Projects Structure and features
 
 The project has two main modules
 
@@ -27,6 +27,7 @@ The project has two main modules
 * node
 * npm
 * jdk
+* angular cli
 
 ### Let's get started,
 
@@ -42,7 +43,7 @@ Go to **fizzbuzz-client** module, run below commands
 
 ```
     npm install (needed only first time for building the project)
-    npm build
+    ng build
 ```
 
 Now, Go to **fizzbuzz-server** module and run below commands
@@ -108,4 +109,28 @@ run unit tests in fizzbuzz-server module with below command
 * Go to fizzbuzz-server module and run
 ```
     mvn test
+```
+### Note
+
+If you want to use a different port than 8080 (for example:- 8085), then change the port in
+
+* fizzbuzz-client/src/app/services/fizzbuzz.service.ts
+
+```
+const baseUrl = 'http://localhost:8080/fizzbuzz/play';
+```
+
+to 
+
+```
+const baseUrl = 'http://localhost:8085/fizzbuzz/play';
+```
+and after that repeat all the steps for building and running the project (mentioned above).
+
+and then start fizzbuzz-server project with below command
+
+```
+mvn clean install
+mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8085
+
 ```
