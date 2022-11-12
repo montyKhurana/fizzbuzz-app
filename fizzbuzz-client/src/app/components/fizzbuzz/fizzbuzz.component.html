@@ -35,5 +35,8 @@
       </button>
     </form>
   </div>
-  <app-fizzbuzz-list *ngIf="!!fizzBuzzList" [fizzBuzzList]="fizzBuzzList"></app-fizzbuzz-list>
+  <app-fizzbuzz-list *ngIf="!!fizzBuzzResponse"
+                     [fizzBuzzResponse]=fizzBuzzResponse
+                     (pageChangeTo)="handlePageChange($event)">
+  </app-fizzbuzz-list>
 </div>

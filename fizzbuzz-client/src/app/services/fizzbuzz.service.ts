@@ -12,14 +12,10 @@ export class FizzbuzzService {
 
   constructor(private http: HttpClient) { }
 
-  getFizzBuzzSequence(input?: number): Observable<String[]> {
-    return this.http.get<FizzBuzzResponse>(`${baseUrl}/${input}`)
+  getFizzBuzzSequence(input?: number, params?: any): Observable<FizzBuzzResponse> {
+    return this.http.get<FizzBuzzResponse>(`${baseUrl}/${input}`, {params :  params})
       .pipe(
-        map(response => response.fizzBuzzSequence),
-        catchError(error => {
-          console.log('error is ', error);
-          return of<String[]>([]);
-        }),
+        map(response => response),
       );
   }
 }

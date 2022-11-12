@@ -24,5 +24,15 @@
       "name": "text.fizz.buzz",
       "type": "java.lang.String",
       "description": "Description for text.fizz.buzz."
+    },
+    {
+      "name": "results.limit",
+      "type": "java.lang.String",
+      "description": "Description for results.limit."
+    },
+    {
+      "name": "invalid.value.in.page.param",
+      "type": "java.lang.String",
+      "description": "Description for invalid.value.in.page.param."
     }
   ] }

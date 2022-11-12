@@ -1,5 +1,6 @@
 package com.fizzbuzz.service;
 
+import com.fizzbuzz.models.PageOption;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +36,7 @@ public class FizzBuzzPlayServiceTests {
         assertFalse(fizzBuzzPlayService.validateInput(2147483647));
         assertTrue(fizzBuzzPlayService.validateInput(3));
         assertTrue(fizzBuzzPlayService.validateInput(104050));
+        assertFalse(fizzBuzzPlayService.validateInput(-78));
     }
 
     /**
@@ -125,12 +127,81 @@ public class FizzBuzzPlayServiceTests {
         assertEquals(textFizz, fizzBuzzPlayService.getFizzBuzzValue(2727));
     }
 
+    // Better naming and Java doc
+    /**
+     * test case for checking that getFizzBuzzValue method returns original number when fizzbuzz criteria is not met
+     */
+    @Test
+    public void shouldReturnNullPageOptionsWhenPageParameterIsInCorrect() {
+        PageOption pageOption = fizzBuzzPlayService.getPageOption(1231, 4);
+        assertNull(pageOption);
+
+        PageOption pageOptionc = fizzBuzzPlayService.getPageOption(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        assertNull(pageOptionc);
+
+        PageOption pageOptionx = fizzBuzzPlayService.getPageOption(Integer.MAX_VALUE, -1);
+        assertNull(pageOptionx);
+
+        PageOption pageOption3 = fizzBuzzPlayService.getPageOption(12345, -1);
+        assertNull(pageOption3);
+
+        PageOption pageOptionMin = fizzBuzzPlayService.getPageOption(Integer.MAX_VALUE, Integer.MIN_VALUE);
+        assertNull(pageOptionMin);
+    }
+
+    @Test
+    public void shouldReturnValidPageOptionsWhenInputIsLessThanResultsLimit() {
+        PageOption pageOptionx = fizzBuzzPlayService.getPageOption(123, 0);
+        testPageOptions(pageOptionx, Arrays.asList(1, 1, 123));
+    }
+
+    @Test
+    public void shouldReturnValidPageOptionsWhenPageParamIsEitherNullOrZero() {
+        PageOption pageOption = fizzBuzzPlayService.getPageOption(12389, 0);
+        testPageOptions(pageOption, Arrays.asList(1, 1, 1000));
+    }
+
+
+    /**
+     * test case for checking that getFizzBuzzValue method returns original number when fizzbuzz criteria is not met
+     */
+    @Test
+    public void shouldReturnValidPageOptions() {
+        PageOption pageOption1 = fizzBuzzPlayService.getPageOption(12345, 0);
+        testPageOptions(pageOption1, Arrays.asList(1, 1, 1000));
+
+        PageOption pageOption2 = fizzBuzzPlayService.getPageOption(12345, 8);
+        testPageOptions(pageOption2, Arrays.asList(8, 7001, 8000));
+
+        PageOption pageOption3 = fizzBuzzPlayService.getPageOption(12345, 13);
+        testPageOptions(pageOption3, Arrays.asList(13, 12001, 12345));
+    }
+
+    @Test
+    public void shouldReturnValidPageOptionsWithMAXInteregerValueInPageParam() {
+        PageOption pageOption4 = fizzBuzzPlayService.getPageOption(Integer.MAX_VALUE, 0);
+        testPageOptions(pageOption4, Arrays.asList(1, 1, 1000));
+
+        PageOption pageOption5 = fizzBuzzPlayService.getPageOption(Integer.MAX_VALUE, 90);
+        testPageOptions(pageOption5, Arrays.asList(90, 89001, 90000));
+
+        PageOption pageOption6 = fizzBuzzPlayService.getPageOption(Integer.MAX_VALUE, 2147484);
+        testPageOptions(pageOption6, Arrays.asList(2147484, 2147483001, 2147483647));
+    }
+
+
+    private void testPageOptions(PageOption pageOption, List<Integer> expectedValues) {
+        assertEquals(expectedValues.get(0), pageOption.getCurrentPage());
+        assertEquals(expectedValues.get(1), pageOption.getStart());
+        assertEquals(expectedValues.get(2), pageOption.getEnd());
+    }
+
     /**
      * test case for checking that play method returns correct fizzbuzz sequence
      */
     @Test
     public void testPlaySequence() {
         List<String> numbers = Arrays.asList("1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz", "11", "Fizz", "13", "14", "Fizz Buzz");
-        assertIterableEquals(numbers, fizzBuzzPlayService.play(15));
+        assertIterableEquals(numbers, fizzBuzzPlayService.play(1, 15));
     }
 }

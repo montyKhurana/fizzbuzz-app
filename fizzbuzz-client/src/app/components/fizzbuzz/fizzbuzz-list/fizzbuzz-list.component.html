@@ -1,7 +1,20 @@
 <app-loading-fizzbuzz></app-loading-fizzbuzz>
+<div *ngIf="fizzBuzzResponse.input > fizzBuzzResponse.resultsLimit"
+  class="col-md-12 pagination-container">
+  <pagination-controls
+    previousLabel="Prev"
+    nextLabel="Next"
+    [responsive]="true"
+    (pageChange)="handlePageChange($event)"
+  ></pagination-controls>
+</div>
 <div class="fizzbuzz-card-container">
   <div fxLayout="row wrap" fxLayoutGap="32px" fxLayoutAlign="flex-start">
-    <ng-container *ngFor="let element of fizzBuzzList">
+    <ng-container *ngFor="let element of fizzBuzzResponse.fizzBuzzSequence | paginate : {
+                  itemsPerPage: resultsLimit,
+                  currentPage: currentPage,
+                  totalItems: totalItems
+                }; let i = index">
       <div fxFlex="0 1 100px" class="fizzbuzz-card">{{element}} </div>
     </ng-container>
   </div>

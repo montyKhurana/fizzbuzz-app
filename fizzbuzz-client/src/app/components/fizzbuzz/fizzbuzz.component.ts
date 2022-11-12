@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { FizzbuzzService } from 'src/app/services/fizzbuzz.service';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LoaderService} from "../../services/loaderService";
+import {FizzBuzzRequestParameter, FizzBuzzResponse} from "../models/fizzbuzz.model";
 
 @Component({
   selector: 'app-fizzbuzz',
@@ -10,7 +11,8 @@ import {LoaderService} from "../../services/loaderService";
 })
 export class FizzbuzzComponent implements OnInit {
   public fizzBuzzForm: FormGroup;
-  public fizzBuzzList: String[];
+  // public fizzBuzzList: String[];
+  public fizzBuzzResponse: FizzBuzzResponse;
   public userInput: number;
   private maxInputNumber: number = 20000;
 
@@ -28,11 +30,13 @@ export class FizzbuzzComponent implements OnInit {
   public playFizzBuzz(): void {
     const formValue = this.fizzBuzzForm.value;
     this.userInput = formValue.inputControl
-    this.fizzBuzzList = [];
+    // this.fizzBuzzList = [];
+    this.fizzBuzzResponse = null;
     this.fizzbuzzService.getFizzBuzzSequence(this.userInput)
       .subscribe({
         next: (data) => {
-          this.fizzBuzzList = data;
+          console.log('data response is', data);
+          this.fizzBuzzResponse = data;
         }});
   }
 
@@ -43,6 +47,24 @@ export class FizzbuzzComponent implements OnInit {
         Validators.max(this.maxInputNumber),
         Validators.pattern(/^[1-9]\d*$/)]],
     });
+  }
+
+  public handlePageChange(pageNumber: number): void {
+    let params: FizzBuzzRequestParameter= this.getEmptyFizzBuzzRequest();
+    params.page = pageNumber;
+
+    this.fizzBuzzResponse = null;
+    this.fizzbuzzService.getFizzBuzzSequence(this.userInput, params)
+      .subscribe({
+        next: (data) => {
+          this.fizzBuzzResponse = data;
+        }});
+  }
+
+  private getEmptyFizzBuzzRequest(): FizzBuzzRequestParameter {
+    return {
+      page: null
+    }
   }
 
 }

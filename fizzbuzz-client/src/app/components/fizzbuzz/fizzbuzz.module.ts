@@ -8,6 +8,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FlexLayoutModule} from "@angular/flex-layout";
+import {NgxPaginationModule} from "ngx-pagination";
 
 const fizzBuzzComponents = [
   FizzbuzzComponent,
@@ -24,6 +25,7 @@ const fizzBuzzComponents = [
     BrowserAnimationsModule,
     FlexLayoutModule,
     ReactiveFormsModule,
+    NgxPaginationModule,
   ],
   exports: [...fizzBuzzComponents],
 })

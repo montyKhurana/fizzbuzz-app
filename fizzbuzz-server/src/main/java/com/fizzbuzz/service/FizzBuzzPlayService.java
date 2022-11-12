@@ -1,5 +1,7 @@
 package com.fizzbuzz.service;
 
+import com.fizzbuzz.models.FizzBuzzResponse;
+import com.fizzbuzz.models.PageOption;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,15 @@ public class FizzBuzzPlayService {
     @Value("${text.fizz.buzz}")
     private String textFizzBuzz;
 
+    @Value("${results.limit}")
+    private int resultsLimit;
+
+    @Value("${invalid.input.message}")
+    private String invalidInputMessage;
+
+    @Value("${invalid.value.in.page.param}")
+    private String invalidValueInPageParam;
+
     /**
      * This method is the used for validating user input number
      * Valid user input should be in range from 1 to the value defined in max.input.number configuration property
@@ -41,16 +52,49 @@ public class FizzBuzzPlayService {
         } else return input <= maxInputNumber;
     }
 
+
+    public PageOption getPageOption(int inputNumber, Integer page) {
+        if (inputNumber > resultsLimit) {
+            if (page != null && page != 0) {
+                if (!isTotalPageCountMoreThanPageParam(inputNumber, page)) {
+                    return null;
+                }
+                int previousNumberResults = (page - 1) * resultsLimit;
+                int start = previousNumberResults + 1;
+                int end = (inputNumber - previousNumberResults) <= resultsLimit ? inputNumber : (previousNumberResults + resultsLimit);
+                return new PageOption(page, start, end);
+            }
+            return new PageOption(1, 1, resultsLimit);
+        }
+        return new PageOption(1, 1, inputNumber);
+
+    }
+
+
     /**
      * This method is the used for creating a valid fizzBuzz list based on user input number
      *
      * @param inputNumber valid input number
      * @return list of a numbers implementing fizzbuzz rules
      */
-    public List<String> play(int inputNumber) {
-        return IntStream.rangeClosed(1, inputNumber)
+    public List<String> play(int start, int inputNumber) {
+        return IntStream.rangeClosed(start, inputNumber)
                 .mapToObj(this::getFizzBuzzValue)
                 .collect(Collectors.toList());
+    }
+
+    public FizzBuzzResponse getFizzBuzzSequence(int inputNumber, Integer page) {
+        FizzBuzzResponse fizzBuzzResponse = null;
+        if (!validateInput(inputNumber)) {
+            return new FizzBuzzResponse(inputNumber, invalidInputMessage);
+        } else {
+            PageOption pageOption = getPageOption(inputNumber, page);
+            if (pageOption != null) {
+                return new FizzBuzzResponse(inputNumber, pageOption.getCurrentPage(), resultsLimit, play(pageOption.getStart(), pageOption.getEnd()));
+            } else {
+                return new FizzBuzzResponse(inputNumber, invalidValueInPageParam);
+            }
+        }
     }
 
     /**
@@ -90,5 +134,13 @@ public class FizzBuzzPlayService {
         }
         // Default case: return numeric value as a string
         return String.valueOf(inputNumber);
+    }
+
+    boolean isTotalPageCountMoreThanPageParam(int inputNumber, int page) {
+        if (page <= 0) {
+            return false;
+        }
+        long pagesCount = (long) Math.ceil((double) inputNumber / resultsLimit);
+        return pagesCount >= page;
     }
 }

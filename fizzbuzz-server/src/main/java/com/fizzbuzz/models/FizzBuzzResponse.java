@@ -12,6 +12,8 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FizzBuzzResponse {
     private int input;
+    private int currentPage;
+    private int resultsLimit;
     private String message;
     private List<String> fizzBuzzSequence;
 
@@ -26,6 +28,13 @@ public class FizzBuzzResponse {
 
     public FizzBuzzResponse(int input, List<String> fizzBuzzSequence) {
         this.input = input;
+        this.fizzBuzzSequence = fizzBuzzSequence;
+    }
+
+    public FizzBuzzResponse(int input, int currentPage, int resultsLimit, List<String> fizzBuzzSequence) {
+        this.input = input;
+        this.currentPage = currentPage;
+        this.resultsLimit = resultsLimit;
         this.fizzBuzzSequence = fizzBuzzSequence;
     }
 
@@ -51,5 +60,21 @@ public class FizzBuzzResponse {
 
     public void setFizzBuzzSequence(List<String> fizzBuzzSequence) {
         this.fizzBuzzSequence = fizzBuzzSequence;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public int getResultsLimit() {
+        return resultsLimit;
+    }
+
+    public void setResultsLimit(int resultsLimit) {
+        this.resultsLimit = resultsLimit;
     }
 }
