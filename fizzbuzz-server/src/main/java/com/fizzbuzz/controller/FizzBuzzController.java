@@ -3,7 +3,6 @@ package com.fizzbuzz.controller;
 import com.fizzbuzz.models.FizzBuzzResponse;
 import com.fizzbuzz.service.FizzBuzzPlayService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,9 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/fizzbuzz")
 public class FizzBuzzController {
 
-	@Value("${invalid.input.message}")
-	private String invalidInputMessage;
-
 	private final FizzBuzzPlayService fizzBuzzPlayService;
 
 	@Autowired
@@ -43,12 +39,6 @@ public class FizzBuzzController {
 	 */
 	@GetMapping(value = "/play/{inputNumber}", produces = "application/json")
 	public ResponseEntity<FizzBuzzResponse> play(@PathVariable("inputNumber") int inputNumber) {
-			FizzBuzzResponse fizzBuzzResponse;
-			if (!fizzBuzzPlayService.validateInput(inputNumber)) {
-				fizzBuzzResponse = new FizzBuzzResponse(inputNumber, invalidInputMessage);
-			} else {
-				fizzBuzzResponse = new FizzBuzzResponse(inputNumber, fizzBuzzPlayService.play(inputNumber));
-			}
-			return new ResponseEntity<>(fizzBuzzResponse, HttpStatus.OK);
+			return new ResponseEntity<>(fizzBuzzPlayService.getFizzBuzzResponse(inputNumber), HttpStatus.OK);
 	}
 }

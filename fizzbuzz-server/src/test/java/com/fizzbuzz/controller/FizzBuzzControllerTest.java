@@ -1,5 +1,6 @@
 package com.fizzbuzz.controller;
 
+import com.fizzbuzz.models.FizzBuzzResponse;
 import com.fizzbuzz.service.FizzBuzzPlayService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,8 +40,8 @@ public class FizzBuzzControllerTest {
     @Test
     public void testPlayWithValidInput() throws Exception {
         List<String> fizzBuzzSequence = Arrays.asList("1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz", "11", "Fizz", "13", "14", "Fizz Buzz");
-        Mockito.when(fizzBuzzPlayService.validateInput(Mockito.anyInt())).thenReturn(true);
-        Mockito.when(fizzBuzzPlayService.play(Mockito.anyInt())).thenReturn(fizzBuzzSequence);
+        FizzBuzzResponse fizzBuzzResponse = new FizzBuzzResponse(15, fizzBuzzSequence);
+        Mockito.when(fizzBuzzPlayService.getFizzBuzzResponse(Mockito.anyInt())).thenReturn(fizzBuzzResponse);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
                 "/fizzbuzz/play/15");
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -53,7 +54,8 @@ public class FizzBuzzControllerTest {
      */
     @Test
     public void testPlayWithInvalidInput() throws Exception {
-        Mockito.when(fizzBuzzPlayService.validateInput(Mockito.anyInt())).thenReturn(false);
+        FizzBuzzResponse fizzBuzzResponse = new FizzBuzzResponse(0, "Please enter a valid number between 1 to 200000");
+        Mockito.when(fizzBuzzPlayService.getFizzBuzzResponse(Mockito.anyInt())).thenReturn(fizzBuzzResponse);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
                 "/fizzbuzz/play/0");
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();

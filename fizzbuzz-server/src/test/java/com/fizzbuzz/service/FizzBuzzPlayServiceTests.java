@@ -1,5 +1,6 @@
 package com.fizzbuzz.service;
 
+import com.fizzbuzz.models.FizzBuzzResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -132,5 +133,30 @@ public class FizzBuzzPlayServiceTests {
     public void testPlaySequence() {
         List<String> numbers = Arrays.asList("1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz", "11", "Fizz", "13", "14", "Fizz Buzz");
         assertIterableEquals(numbers, fizzBuzzPlayService.play(15));
+    }
+
+    /**
+     * test case for checking that getFizzBuzzResponse gives correct warning message when user input is invalid
+     */
+    @Test
+    public void testGetFizzBuzzResponseForInvalidInput() {
+        FizzBuzzResponse fizzBuzzResponse = fizzBuzzPlayService.getFizzBuzzResponse(0);
+        assertEquals("Please enter a valid number between 1 to 200000", fizzBuzzResponse.getMessage());
+
+        FizzBuzzResponse fizzBuzzResponseForNegativeNumber = fizzBuzzPlayService.getFizzBuzzResponse(-1);
+        assertEquals("Please enter a valid number between 1 to 200000", fizzBuzzResponseForNegativeNumber.getMessage());
+
+        FizzBuzzResponse fizzBuzzResponseForBigNumber = fizzBuzzPlayService.getFizzBuzzResponse(12345678);
+        assertEquals("Please enter a valid number between 1 to 200000", fizzBuzzResponseForBigNumber.getMessage());
+    }
+
+    /**
+     * test case for checking that getFizzBuzzResponse gives correct sequence message when user input is valid
+     */
+    @Test
+    public void testGetFizzBuzzResponseForValidInput() {
+        List<String> numbers = Arrays.asList("1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz", "11", "Fizz", "13", "14", "Fizz Buzz");
+        FizzBuzzResponse fizzBuzzResponse = fizzBuzzPlayService.getFizzBuzzResponse(15);
+        assertIterableEquals(numbers, fizzBuzzResponse.getFizzBuzzSequence());
     }
 }

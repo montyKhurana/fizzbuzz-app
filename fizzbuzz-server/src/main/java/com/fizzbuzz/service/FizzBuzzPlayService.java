@@ -1,9 +1,9 @@
 package com.fizzbuzz.service;
 
+import com.fizzbuzz.models.FizzBuzzResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -28,6 +28,27 @@ public class FizzBuzzPlayService {
     @Value("${text.fizz.buzz}")
     private String textFizzBuzz;
 
+    @Value("${invalid.input.message}")
+    private String invalidInputMessage;
+
+    /**
+     * This method is the used getting Fizz Buzz response onject based on user input number
+     * Possible response contains
+     * * user input is valid and response contains valid fizz buzz sequence
+     * * user input is invalid and response does not contain fizz buzz sequence but a message will be provided to user to input correct value
+     *
+     * @param inputNumber user input number
+     * @return FizzBuzzResponse
+     */
+    public FizzBuzzResponse getFizzBuzzResponse(int inputNumber) {
+        if (!validateInput(inputNumber)) {
+            return new FizzBuzzResponse(inputNumber, invalidInputMessage);
+        } else {
+            return new FizzBuzzResponse(inputNumber, play(inputNumber));
+        }
+    }
+
+
     /**
      * This method is the used for validating user input number
      * Valid user input should be in range from 1 to the value defined in max.input.number configuration property
@@ -35,7 +56,7 @@ public class FizzBuzzPlayService {
      * @param input user input number
      * @return boolean true/false if number is valid or not
      */
-    public boolean validateInput(int input) {
+    boolean validateInput(int input) {
         if (input <= 0) {
             return false;
         } else return input <= maxInputNumber;
@@ -47,7 +68,7 @@ public class FizzBuzzPlayService {
      * @param inputNumber valid input number
      * @return list of a numbers implementing fizzbuzz rules
      */
-    public List<String> play(int inputNumber) {
+    List<String> play(int inputNumber) {
         return IntStream.rangeClosed(1, inputNumber)
                 .mapToObj(this::getFizzBuzzValue)
                 .collect(Collectors.toList());
